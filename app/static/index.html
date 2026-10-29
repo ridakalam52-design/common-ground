@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Common Ground · plan a night out your whole group will love</title>
+  <meta name="description" content="An AI agent that finds the taste your friends share, using Qloo, and plans one evening: a film, a soundtrack, and dinner." />
+  <meta name="theme-color" content="#1d1a2f" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='38' cy='50' r='28' fill='%23ff7a59' opacity='.9'/><circle cx='62' cy='50' r='28' fill='%23ffc24b' opacity='.9'/></svg>" />
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap hero-inner">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 100 60" aria-hidden="true"><circle cx="34" cy="30" r="26" fill="#ff7a59" opacity=".92"/><circle cx="66" cy="30" r="26" fill="#ffc24b" opacity=".85"/><path d="M50 8.6a26 26 0 0 1 0 42.8a26 26 0 0 1 0-42.8z" fill="#fff4e6"/></svg>
+        <span>Common Ground</span>
+        <span id="modeBadge" class="badge hidden" title="QLOO_API_KEY is not set, so the app is using hand-written demo data">demo data</span>
+      </div>
+      <h1>One evening your <em>whole</em> group will love.</h1>
+      <p class="lede">Each friend names a few things they love. The agent asks Qloo where your tastes overlap, then picks a film, a soundtrack and a dinner spot, and shows its working for every pick.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card form-card" aria-labelledby="formTitle">
+      <div class="card-head">
+        <h2 id="formTitle">Who's coming?</h2>
+        <button type="button" class="ghost" id="exampleBtn">Load Delhi example</button>
+      </div>
+      <form id="planForm" autocomplete="off">
+        <label class="city">
+          <span>City for dinner</span>
+          <input id="city" name="city" value="New Delhi" maxlength="80" required />
+        </label>
+        <div id="friends" class="friends"></div>
+        <div class="form-actions">
+          <button type="button" class="ghost" id="addFriend">+ Add a friend</button>
+          <button type="submit" class="primary" id="goBtn">Plan our evening</button>
+        </div>
+        <p class="hint">2 to 5 friends, up to 6 loves each: artists, films, shows, books or places. Press Enter or comma after each one.</p>
+        <p id="formError" class="error hidden" role="alert"></p>
+      </form>
+    </section>
+
+    <section id="traceCard" class="card trace-card hidden" aria-live="polite">
+      <div class="card-head">
+        <h2>Agent trace <span id="plannerTag" class="tag-soft"></span></h2>
+        <span id="traceStatus" class="status"></span>
+      </div>
+      <ol id="trace" class="trace"></ol>
+    </section>
+
+    <section id="results" class="hidden">
+      <div class="card summary-card">
+        <p class="eyebrow" id="resultEyebrow">Your evening</p>
+        <p id="summary" class="summary"></p>
+        <p id="unresolved" class="muted small hidden"></p>
+      </div>
+      <div id="slots" class="slots"></div>
+      <div class="card overlap-card">
+        <div class="card-head">
+          <h2>Overlap map</h2>
+          <span class="muted small">Shared taste tags from Qloo's compare endpoint</span>
+        </div>
+        <div id="pairs" class="pairs"></div>
+        <div id="overlap" class="overlap"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>Built for the Qloo Agentic Hackathon · taste data from <a href="https://www.qloo.com" target="_blank" rel="noopener">Qloo</a> · plans by Gemini · MIT licensed</p>
+  </footer>
+
+  <template id="friendTpl">
+    <div class="friend">
+      <div class="friend-top">
+        <span class="avatar"></span>
+        <input class="fname" placeholder="Name" maxlength="40" aria-label="Friend's name" required />
+        <button type="button" class="icon remove" aria-label="Remove friend">×</button>
+      </div>
+      <div class="chips">
+        <input class="chip-input" placeholder="Things they love…" aria-label="Things they love" />
+      </div>
+    </div>
+  </template>
+  <script src="/static/app.js"></script>
+</body>
+</html>
