@@ -2,7 +2,7 @@
 
 *An agent that plans one evening a whole group of friends will enjoy, using Qloo's taste graph to find where their tastes actually overlap.*
 
-**Live demo:** https://common-ground.onrender.com
+**Live demo:** https://common-ground-a1fi.onrender.com
 
 ## Inspiration
 
@@ -17,7 +17,7 @@ Each friend (2 to 5 of them) enters two or three things they love: artists, film
 - asks Qloo for recommendations driven by everyone's picks combined, with dinner places restricted to the group's city,
 - and returns an evening plan: **something to watch, a soundtrack artist, and a place for dinner**, each with two alternates.
 
-Every pick carries a "why" grounded in real Qloo signals: its affinity score, the shared tags and which friends share them, and whose pick pulled it in. For the Delhi example group the live run suggests *Dil Bechara* to watch, *Atif Aslam* for the soundtrack and *The Roseate, New Delhi* for dinner, explaining for example that Dil Bechara scores 0.94 against the group and carries the "Drama" tag all four friends share. The UI streams the agent's work live: each tool step, each Qloo API call and each planner thought.
+Every pick carries a "why" grounded in real Qloo signals: its affinity score, the shared tags and which friends share them, and whose pick pulled it in. For the Delhi example group the live run suggests *Dil Bechara* to watch, *Atif Aslam* for the soundtrack and *Bengali Sweet House* in Bengali Market for dinner, explaining for example that Dil Bechara scores 0.94 against the group and carries the "Drama" tag all four friends share. The UI streams the agent's work live: each tool step, each Qloo API call and each planner thought.
 
 ## How we built it
 
@@ -33,6 +33,7 @@ Every pick carries a "why" grounded in real Qloo signals: its affinity score, th
 
 - **Entity resolution is ambiguous.** Searching "Prateek Kuhad" returns the *person* before the *artist*, and only the artist carries music taste data. "Karim's" matched a Chandigarh branch first. We added type preferences and a city-scoped retry for restaurants.
 - **Cross-domain overlap.** Compare returns few shared tags between, say, a film-only friend and a music-only friend, so the overlap map aggregates across all pairs and the ranking leans on combined-signal affinity when tags are thin.
+- **Dinner means dinner.** Qloo's restaurant tag also matches hotels, malls and dessert counters, so place results are filtered on their category tags.
 - **Undocumented shapes.** Explainability and locality structures had to be verified against live responses (for example, `query.localities.filter` is a list), so the parsers are defensive and tested.
 - **Keeping an LLM honest.** Models like to invent confident numbers. The grounding check made explanations trustworthy without giving up the warmth of generated text.
 - **Latency.** A full plan takes over a dozen API calls; running independent calls in parallel keeps the live run around 7 seconds.

@@ -6,7 +6,7 @@ Each friend types two or three things they love: an artist, a film, a show, a re
 
 Built for the **Qloo LLM Hackathon** (FastAPI + vanilla JS, Qloo Insights API, optional Gemini).
 
-**Live demo:** https://common-ground.onrender.com
+**Live demo:** https://common-ground-a1fi.onrender.com
 
 ---
 
