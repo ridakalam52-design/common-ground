@@ -261,6 +261,8 @@ class CommonGroundAgent:
         # Never recommend something a friend already named (search may have resolved it as another type).
         own = {_norm(e["name"]) for v in st.resolved.values() for e in v} | {_norm(p) for f in st.friends for p in f.picks}
         entities = [e for e in entities if _norm(e["name"]) not in own]
+        if entity_type == "place":
+            entities = [e for e in entities if _is_dinner_spot(e)] or entities
         slot = TYPE_TO_SLOT[entity_type]
         known = {c["id"] for c in st.candidates[slot]}
         st.candidates[slot].extend(e for e in entities if e["id"] not in known)
@@ -433,3 +435,15 @@ class CommonGroundAgent:
         rest = ", ".join(t["name"] for t in tags[1:3])
         return (f"The strongest common ground is \"{top['name']}\", shared by {', '.join(top['friends'])}"
                 f" (compare score {fmt_aff(top['score'])})." + (f" Other shared threads: {rest}." if rest else ""))
+
+
+_NOT_DINNER = ("place:hotel", "shopping_mall", "place:airport", "serviced_accommodation", "place:resort", "place:lodging", "chocolate_shop", "donut_shop")
+
+
+def _is_dinner_spot(e: dict) -> bool:
+    """Qloo's restaurant tag also matches hotels, malls and dessert counters; keep real dinner places."""
+    ids = " ".join(i or "" for i in (e.get("tag_ids") or [t.get("id") for t in e.get("tags", [])]))
+    name = (e.get("name") or "").lower()
+    if any(k in ids for k in _NOT_DINNER):
+        return False
+    return not any(w in name for w in (" hotel", "mall,", " mall", "airport"))

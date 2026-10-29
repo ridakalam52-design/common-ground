@@ -194,6 +194,7 @@ def parse_entity(r: Json) -> Json:
         "affinity": q.get("affinity") if isinstance(q.get("affinity"), (int, float)) else None,
         "popularity": r.get("popularity") if isinstance(r.get("popularity"), (int, float)) else None,
         "tags": tags,
+        "tag_ids": [t.get("tag_id") or t.get("id") for t in (r.get("tags") or []) if isinstance(t, dict)],
         "description": (desc or "")[:180] or None,
         "image": image,
         "address": props.get("address"),
